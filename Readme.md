@@ -1,1 +1,1 @@
-This is the Upgraded Version of the Meal Saver Application
+This is the Upgraded Version of the Meal Saver Application for One Institute 
