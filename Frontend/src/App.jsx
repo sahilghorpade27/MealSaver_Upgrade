@@ -5,12 +5,14 @@ import AdminLogin from './pages/AdminLogin';
 import UploadMenu from './pages/UploadMenu';
 import UserDashboard from './pages/UserDashboard';
 import AdminAttendance from './pages/AdminAttendance';
+import Landing from './pages/Landing';
 
 
 function App() {
   return (
     <div>
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/" element={<h1>Meal Saver Landing Page</h1>} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -18,7 +20,7 @@ function App() {
         <Route path="/admin/upload-menu" element={<UploadMenu />} />
         <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/admin/attendance" element={<AdminAttendance />} />
-
+        <Route path="/" element={<Landing />} />
       </Routes>
     </div>
   );
