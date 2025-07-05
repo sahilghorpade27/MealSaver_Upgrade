@@ -1,4 +1,5 @@
 import Menu from '../models/Menu.js';
+import Attendance from '../models/Attendance.js';
 
 // Hardcoded admin credentials
 const ADMIN_USERNAME = 'admin';
@@ -33,5 +34,29 @@ export const uploadMenu = async (req, res) => {
     res.status(201).json({ message: 'Menu uploaded successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error uploading menu', error: err.message });
+  }
+};
+
+// Get total meal counts for a specific date
+export const getMealCounts = async (req, res) => {
+  const { date } = req.query;
+
+  try {
+    const queryDate = new Date(date);
+    queryDate.setHours(0, 0, 0, 0);
+
+    const records = await Attendance.find({ date: queryDate });
+
+    let breakfast = 0, lunch = 0, dinner = 0;
+
+    for (const record of records) {
+      if (record.breakfast) breakfast++;
+      if (record.lunch) lunch++;
+      if (record.dinner) dinner++;
+    }
+
+    res.json({ date, breakfast, lunch, dinner, total: records.length });
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching attendance data' });
   }
 };
