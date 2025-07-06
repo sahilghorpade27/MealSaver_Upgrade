@@ -94,7 +94,6 @@ function Register() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Registration Number */}
             <InputField
               icon={CreditCard}
               label="Registration Number"
@@ -106,7 +105,6 @@ function Register() {
               required
             />
 
-            {/* Full Name */}
             <InputField
               icon={User}
               label="Full Name"
@@ -118,7 +116,7 @@ function Register() {
               required
             />
 
-            {/* Year */}
+            {/* Year Dropdown */}
             <div className="space-y-2">
               <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
                 <Calendar className="w-4 h-4 text-gray-500" />
@@ -140,19 +138,18 @@ function Register() {
               </select>
             </div>
 
-            {/* Mobile */}
             <InputField
               icon={Phone}
               label="Mobile Number"
               name="mobile"
               value={formData.mobile}
               onChange={handleChange}
-              placeholder="Enter your mobile number"
+              placeholder="Enter your 10-digit mobile number"
               type="tel"
               required
             />
 
-            {/* Password */}
+            {/* Password Field */}
             <div className="space-y-2">
               <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
                 <Lock className="w-4 h-4 text-gray-500" />
@@ -227,7 +224,7 @@ function Register() {
   );
 }
 
-// Reusable InputField Component
+// 🔁 Reusable InputField Component
 function InputField({ icon: Icon, label, name, value, onChange, placeholder, type, required }) {
   return (
     <div className="space-y-2">

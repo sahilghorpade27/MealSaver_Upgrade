@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { Calendar, Users, Coffee, Utensils, Moon, BarChart3, RefreshCw, ArrowLeft, TrendingUp } from 'lucide-react';
+import {
+  Calendar,
+  Users,
+  Coffee,
+  Utensils,
+  Moon,
+  BarChart3,
+  RefreshCw,
+  ArrowLeft,
+  TrendingUp
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function AdminAttendance() {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Simulate API call with sample data
+      // Simulated API call (replace this with actual fetch)
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Sample data - replace with actual API call
       const sampleData = {
         total: 150,
         breakfast: 120,
         lunch: 145,
         dinner: 130
       };
-      
       setData(sampleData);
     } catch (err) {
       alert('Failed to load attendance summary');
@@ -32,48 +41,49 @@ function AdminAttendance() {
     fetchData();
   }, [date]);
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+  const formatDate = (dateString) =>
+    new Date(dateString).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-  };
 
   const getAttendancePercentage = (mealCount, total) => {
     return total > 0 ? ((mealCount / total) * 100).toFixed(1) : 0;
   };
 
-  const mealData = data ? [
-    {
-      name: 'Breakfast',
-      count: data.breakfast,
-      icon: Coffee,
-      color: 'bg-orange-500',
-      lightColor: 'bg-orange-50',
-      textColor: 'text-orange-600',
-      percentage: getAttendancePercentage(data.breakfast, data.total)
-    },
-    {
-      name: 'Lunch',
-      count: data.lunch,
-      icon: Utensils,
-      color: 'bg-green-500',
-      lightColor: 'bg-green-50',
-      textColor: 'text-green-600',
-      percentage: getAttendancePercentage(data.lunch, data.total)
-    },
-    {
-      name: 'Dinner',
-      count: data.dinner,
-      icon: Moon,
-      color: 'bg-purple-500',
-      lightColor: 'bg-purple-50',
-      textColor: 'text-purple-600',
-      percentage: getAttendancePercentage(data.dinner, data.total)
-    }
-  ] : [];
+  const mealData = data
+    ? [
+        {
+          name: 'Breakfast',
+          count: data.breakfast,
+          icon: Coffee,
+          color: 'bg-orange-500',
+          lightColor: 'bg-orange-50',
+          textColor: 'text-orange-600',
+          percentage: getAttendancePercentage(data.breakfast, data.total)
+        },
+        {
+          name: 'Lunch',
+          count: data.lunch,
+          icon: Utensils,
+          color: 'bg-green-500',
+          lightColor: 'bg-green-50',
+          textColor: 'text-green-600',
+          percentage: getAttendancePercentage(data.lunch, data.total)
+        },
+        {
+          name: 'Dinner',
+          count: data.dinner,
+          icon: Moon,
+          color: 'bg-purple-500',
+          lightColor: 'bg-purple-50',
+          textColor: 'text-purple-600',
+          percentage: getAttendancePercentage(data.dinner, data.total)
+        }
+      ]
+    : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
@@ -90,14 +100,17 @@ function AdminAttendance() {
                 <p className="text-gray-600">Meal attendance summary and statistics</p>
               </div>
             </div>
-            <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors">
+            <button
+              onClick={() => navigate('/admin/upload-menu')}
+              className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+            >
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Admin Panel</span>
             </button>
           </div>
         </div>
 
-        {/* Date Selection Card */}
+        {/* Date Picker */}
         <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -113,7 +126,7 @@ function AdminAttendance() {
               <input
                 type="date"
                 value={date}
-                onChange={e => setDate(e.target.value)}
+                onChange={(e) => setDate(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
               />
               <button
@@ -133,7 +146,7 @@ function AdminAttendance() {
           </div>
         </div>
 
-        {/* Loading State */}
+        {/* Loading */}
         {loading ? (
           <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-12">
             <div className="text-center">
@@ -145,7 +158,6 @@ function AdminAttendance() {
           <>
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {/* Total Users Card */}
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -162,7 +174,6 @@ function AdminAttendance() {
                 </div>
               </div>
 
-              {/* Meal Cards */}
               {mealData.map((meal, index) => (
                 <div key={index} className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
                   <div className="flex items-center justify-between">
@@ -192,7 +203,7 @@ function AdminAttendance() {
               ))}
             </div>
 
-            {/* Detailed Summary */}
+            {/* Summary Section */}
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
               <div className="flex items-center space-x-3 mb-6">
                 <div className="bg-purple-100 p-2 rounded-full">
@@ -200,9 +211,8 @@ function AdminAttendance() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Detailed Summary</h3>
               </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Attendance Statistics */}
+                {/* Left: Meal Stats */}
                 <div className="space-y-4">
                   <h4 className="font-medium text-gray-900 mb-3">Meal Statistics</h4>
                   {mealData.map((meal, index) => (
@@ -221,14 +231,18 @@ function AdminAttendance() {
                   ))}
                 </div>
 
-                {/* Additional Information */}
+                {/* Right: Additional Info */}
                 <div className="space-y-4">
                   <h4 className="font-medium text-gray-900 mb-3">Additional Information</h4>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center py-2">
                       <span className="text-sm text-gray-600">Most Popular Meal</span>
                       <span className="text-sm font-medium text-gray-900">
-                        {mealData.length > 0 ? mealData.reduce((prev, current) => (prev.count > current.count) ? prev : current).name : 'N/A'}
+                        {mealData.length > 0
+                          ? mealData.reduce((prev, curr) =>
+                              prev.count > curr.count ? prev : curr
+                            ).name
+                          : 'N/A'}
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-2">
@@ -240,7 +254,10 @@ function AdminAttendance() {
                     <div className="flex justify-between items-center py-2">
                       <span className="text-sm text-gray-600">Overall Attendance</span>
                       <span className="text-sm font-medium text-green-600">
-                        {data ? ((data.breakfast + data.lunch + data.dinner) / (data.total * 3) * 100).toFixed(1) : 0}%
+                        {data
+                          ? ((data.breakfast + data.lunch + data.dinner) / (data.total * 3) * 100).toFixed(1)
+                          : 0}
+                        %
                       </span>
                     </div>
                   </div>

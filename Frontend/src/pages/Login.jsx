@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChefHat, User, Lock, ArrowLeft, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { ChefHat, User, Lock, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,7 +9,6 @@ function Login() {
   const [formData, setFormData] = useState({ regNo: '', password: '' });
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,12 +20,15 @@ function Login() {
     setSubmitting(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/users/login', formData);
+      const res = await axios.post('/api/users/login', formData);
+
       if (res.data.success) {
         localStorage.setItem('regNo', formData.regNo);
-        setSuccess(true);
         toast.success('Login successful! Welcome to Meal Saver!');
-        setTimeout(() => navigate('/dashboard'), 1000);
+        console.log('Navigating to dashboard...');
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000); // slightly increased to allow toast display
       } else {
         toast.error(res.data.message || 'Login failed. Please try again.');
       }
@@ -52,15 +54,6 @@ function Login() {
 
         {/* Login Card */}
         <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-8">
-          {success && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-              <div className="flex items-center space-x-3">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                <p className="text-green-800 font-medium">Login successful! Redirecting...</p>
-              </div>
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Registration Number */}
             <div className="space-y-2">
@@ -139,7 +132,9 @@ function Login() {
           </div>
 
           <div className="mt-4 text-center">
-            <button className="text-sm text-gray-500 hover:text-gray-700">Forgot your password?</button>
+            <button className="text-sm text-gray-500 hover:text-gray-700">
+              Forgot your password?
+            </button>
           </div>
         </div>
 

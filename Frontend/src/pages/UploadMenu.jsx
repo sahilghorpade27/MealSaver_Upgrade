@@ -141,40 +141,34 @@ function UploadMenu() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Breakfast */}
             <InputWithIcon
               icon={Coffee}
-              color="orange"
               label="Breakfast Menu"
               name="breakfast"
               value={formData.breakfast}
               onChange={handleChange}
               placeholder="e.g., Idli, Sambar, Chutney"
-              ring="orange-500"
+              color="orange"
             />
 
-            {/* Lunch */}
             <InputWithIcon
               icon={Sun}
-              color="green"
               label="Lunch Menu"
               name="lunch"
               value={formData.lunch}
               onChange={handleChange}
               placeholder="e.g., Roti, Rice, Dal, Veg"
-              ring="green-500"
+              color="green"
             />
 
-            {/* Dinner */}
             <InputWithIcon
               icon={Moon}
-              color="purple"
               label="Dinner Menu"
               name="dinner"
               value={formData.dinner}
               onChange={handleChange}
               placeholder="e.g., Paneer Biryani, Curd, Salad"
-              ring="purple-500"
+              color="purple"
             />
 
             {/* Submit */}
@@ -182,11 +176,11 @@ function UploadMenu() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex items-center space-x-3 px-8 py-4 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg hover:shadow-xl"
+                className="flex items-center space-x-3 px-8 py-4 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition shadow-lg hover:shadow-xl"
               >
                 {submitting ? (
                   <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
                     <span>Uploading Menu...</span>
                   </>
                 ) : (
@@ -248,13 +242,42 @@ function UploadMenu() {
   );
 }
 
+// 🟩 Safe Tailwind color mapping (required due to no dynamic class support)
+const colorClasses = {
+  orange: {
+    bg: 'bg-orange-100',
+    text: 'text-orange-600',
+    ring: 'focus:ring-orange-500',
+    border: 'border-orange-200',
+    from: 'from-orange-50',
+    to: 'to-orange-100',
+  },
+  green: {
+    bg: 'bg-green-100',
+    text: 'text-green-600',
+    ring: 'focus:ring-green-500',
+    border: 'border-green-200',
+    from: 'from-green-50',
+    to: 'to-green-100',
+  },
+  purple: {
+    bg: 'bg-purple-100',
+    text: 'text-purple-600',
+    ring: 'focus:ring-purple-500',
+    border: 'border-purple-200',
+    from: 'from-purple-50',
+    to: 'to-purple-100',
+  },
+};
+
 // 🔹 Reusable Input Field
-function InputWithIcon({ icon: Icon, color, label, name, value, onChange, placeholder, ring }) {
+function InputWithIcon({ icon: Icon, label, name, value, onChange, placeholder, color }) {
+  const styles = colorClasses[color];
   return (
     <div className="space-y-2">
       <label className="flex items-center space-x-3 text-sm font-medium text-gray-700">
-        <div className={`bg-${color}-100 p-1.5 rounded-full`}>
-          <Icon className={`w-4 h-4 text-${color}-600`} />
+        <div className={`${styles.bg} p-1.5 rounded-full`}>
+          <Icon className={`w-4 h-4 ${styles.text}`} />
         </div>
         <span>{label}</span>
       </label>
@@ -265,7 +288,7 @@ function InputWithIcon({ icon: Icon, color, label, name, value, onChange, placeh
         onChange={onChange}
         placeholder={placeholder}
         required
-        className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-${ring} focus:border-transparent transition-colors placeholder-gray-400`}
+        className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${styles.ring} focus:border-transparent transition-colors placeholder-gray-400`}
       />
     </div>
   );
@@ -273,11 +296,12 @@ function InputWithIcon({ icon: Icon, color, label, name, value, onChange, placeh
 
 // 🔹 Reusable Preview Card
 function MenuCard({ title, icon: Icon, bg, content }) {
+  const styles = colorClasses[bg];
   return (
-    <div className={`bg-gradient-to-br from-${bg}-50 to-${bg}-100 rounded-lg p-4 border border-${bg}-200`}>
+    <div className={`bg-gradient-to-br ${styles.from} ${styles.to} rounded-lg p-4 ${styles.border}`}>
       <div className="flex items-center space-x-3 mb-3">
-        <div className={`bg-${bg}-100 p-2 rounded-full`}>
-          <Icon className={`w-5 h-5 text-${bg}-600`} />
+        <div className={`${styles.bg} p-2 rounded-full`}>
+          <Icon className={`w-5 h-5 ${styles.text}`} />
         </div>
         <h4 className="font-semibold text-gray-900">{title}</h4>
       </div>
