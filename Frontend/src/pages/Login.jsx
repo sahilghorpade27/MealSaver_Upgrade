@@ -1,39 +1,38 @@
 import React, { useState } from 'react';
 import { ChefHat, User, Lock, ArrowLeft, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
-  const [formData, setFormData] = useState({
-    regNo: '',
-    password: ''
-  });
-
+  const [formData, setFormData] = useState({ regNo: '', password: '' });
   const [submitting, setSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Store user data in memory (localStorage not supported in artifacts)
-      window.userData = { regNo: formData.regNo };
-      
-      setSuccess(true);
-      alert('Login successful! Welcome to Meal Saver!');
-      console.log('Login successful for:', formData.regNo);
-      
-      // In a real app, you would navigate here
-      // navigate('/dashboard');
+      const res = await axios.post('http://localhost:5000/api/users/login', formData);
+      if (res.data.success) {
+        localStorage.setItem('regNo', formData.regNo);
+        setSuccess(true);
+        toast.success('Login successful! Welcome to Meal Saver!');
+        setTimeout(() => navigate('/dashboard'), 1000);
+      } else {
+        toast.error(res.data.message || 'Login failed. Please try again.');
+      }
     } catch (err) {
-      alert('Login failed. Please try again.');
+      console.error(err);
+      toast.error('Login failed. Please check your credentials or try again later.');
     } finally {
       setSubmitting(false);
     }
@@ -53,18 +52,16 @@ function Login() {
 
         {/* Login Card */}
         <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-8">
-          {/* Success Message */}
           {success && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
               <div className="flex items-center space-x-3">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <p className="text-green-800 font-medium">Login successful!</p>
+                <p className="text-green-800 font-medium">Login successful! Redirecting...</p>
               </div>
             </div>
           )}
 
-          {/* Form */}
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Registration Number */}
             <div className="space-y-2">
               <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
@@ -78,7 +75,7 @@ function Login() {
                 onChange={handleChange}
                 placeholder="Enter your registration number"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors placeholder-gray-400"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-400"
               />
             </div>
 
@@ -96,7 +93,7 @@ function Login() {
                   onChange={handleChange}
                   placeholder="Enter your password"
                   required
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors placeholder-gray-400"
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-400"
                 />
                 <button
                   type="button"
@@ -110,9 +107,9 @@ function Login() {
 
             {/* Submit Button */}
             <button
-              onClick={handleSubmit}
+              type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg hover:shadow-xl"
+              className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
             >
               {submitting ? (
                 <>
@@ -126,50 +123,35 @@ function Login() {
                 </>
               )}
             </button>
-          </div>
+          </form>
 
           {/* Register Link */}
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               Don't have an account?{' '}
-              <button className="text-green-600 hover:text-green-700 font-medium transition-colors">
+              <button
+                onClick={() => navigate('/register')}
+                className="text-green-600 hover:text-green-700 font-medium"
+              >
                 Create one here
               </button>
             </p>
           </div>
 
-          {/* Forgot Password */}
           <div className="mt-4 text-center">
-            <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-              Forgot your password?
-            </button>
+            <button className="text-sm text-gray-500 hover:text-gray-700">Forgot your password?</button>
           </div>
         </div>
 
         {/* Back to Home */}
         <div className="text-center mt-6">
-          <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors mx-auto">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 mx-auto"
+          >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Home</span>
           </button>
-        </div>
-
-        {/* Security Note */}
-        <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="flex items-start space-x-3">
-            <div className="bg-blue-100 p-1 rounded-full mt-0.5">
-              <Lock className="w-4 h-4 text-blue-600" />
-            </div>
-            <div>
-              <h3 className="font-medium text-blue-900 mb-1">Quick Login Tips</h3>
-              <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Use your registration number as your login ID</li>
-                <li>• Make sure your password is correct</li>
-                <li>• Contact admin if you're having trouble logging in</li>
-                <li>• Your session will be secure and private</li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </div>

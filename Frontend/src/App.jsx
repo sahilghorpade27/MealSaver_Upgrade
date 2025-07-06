@@ -6,23 +6,20 @@ import UploadMenu from './pages/UploadMenu';
 import UserDashboard from './pages/UserDashboard';
 import AdminAttendance from './pages/AdminAttendance';
 import Landing from './pages/Landing';
-
+import './index.css';
 
 function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/" element={<h1>Meal Saver Landing Page</h1>} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/upload-menu" element={<UploadMenu />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
-        <Route path="/admin/attendance" element={<AdminAttendance />} />
-        <Route path="/" element={<Landing />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin" element={<AdminLogin />} />
+      <Route path="/admin/upload-menu" element={<UploadMenu />} />
+      <Route path="/dashboard" element={<UserDashboard />} />
+      <Route path="/admin/attendance" element={<AdminAttendance />} />
+
+    </Routes>
   );
 }
 
