@@ -1,24 +1,27 @@
 import express from "express";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
-import dotenv from "dotenv";
-import authRoutes from "./routes/authRoutes.js";
-import attendanceRoutes from "./routes/attendanceRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
-
 const app = express();
+
+// ✅ Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // ✅ Important to parse JSON body
 
-app.use("/api/auth", authRoutes);
-app.use("/api/attendance", attendanceRoutes);
+// ✅ Routes
+app.use("/api/users", userRoutes);
 
-mongoose.connect(process.env.MONGODB_URI)
+// ✅ Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  // These options are optional since Mongoose 6+
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
-    console.log("✅ MongoDB connected");
-    app.listen(process.env.PORT, () => {
-      console.log(`🚀 Server started on port ${process.env.PORT}`);
-    });
+    console.log("✅ Connected to MongoDB");
+    app.listen(5000, () => console.log("🚀 Server running on port 5000"));
   })
-  .catch((err) => console.log("❌ DB Error:", err.message));
+  .catch((err) => console.error("❌ MongoDB connection failed:", err));
