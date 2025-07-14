@@ -28,7 +28,7 @@ function Login() {
         console.log('Navigating to dashboard...');
         setTimeout(() => {
           navigate('/dashboard');
-        }, 1000); // slightly increased to allow toast display
+        }, 1000);
       } else {
         toast.error(res.data.message || 'Login failed. Please try again.');
       }
@@ -41,24 +41,24 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div>
+      <div>
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="bg-white rounded-full p-4 w-20 h-20 mx-auto mb-4 shadow-lg">
-            <ChefHat className="w-12 h-12 text-green-600" />
+        <div>
+          <div>
+            <ChefHat />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to your Meal Saver account</p>
+          <h1>Welcome Back</h1>
+          <p>Sign in to your Meal Saver account</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-xl shadow-xl border border-gray-200 p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <form onSubmit={handleSubmit}>
             {/* Registration Number */}
-            <div className="space-y-2">
-              <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                <User className="w-4 h-4 text-gray-500" />
+            <div>
+              <label>
+                <User />
                 <span>Registration Number</span>
               </label>
               <input
@@ -68,17 +68,16 @@ function Login() {
                 onChange={handleChange}
                 placeholder="Enter your registration number"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-400"
               />
             </div>
 
             {/* Password */}
-            <div className="space-y-2">
-              <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
-                <Lock className="w-4 h-4 text-gray-500" />
+            <div>
+              <label>
+                <Lock />
                 <span>Password</span>
               </label>
-              <div className="relative">
+              <div>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
@@ -86,14 +85,12 @@ function Login() {
                   onChange={handleChange}
                   placeholder="Enter your password"
                   required
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder-gray-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff /> : <Eye />}
                 </button>
               </div>
             </div>
@@ -102,16 +99,15 @@ function Login() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full flex items-center justify-center space-x-3 px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors"
             >
               {submitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <div></div>
                   <span>Signing in...</span>
                 </>
               ) : (
                 <>
-                  <ChefHat className="w-5 h-5" />
+                  <ChefHat />
                   <span>Sign In</span>
                 </>
               )}
@@ -119,32 +115,26 @@ function Login() {
           </form>
 
           {/* Register Link */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
+          <div>
+            <p>
               Don't have an account?{' '}
-              <button
-                onClick={() => navigate('/register')}
-                className="text-green-600 hover:text-green-700 font-medium"
-              >
+              <button onClick={() => navigate('/register')}>
                 Create one here
               </button>
             </p>
           </div>
 
-          <div className="mt-4 text-center">
-            <button className="text-sm text-gray-500 hover:text-gray-700">
+          <div>
+            <button>
               Forgot your password?
             </button>
           </div>
         </div>
 
         {/* Back to Home */}
-        <div className="text-center mt-6">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 mx-auto"
-          >
-            <ArrowLeft className="w-4 h-4" />
+        <div>
+          <button onClick={() => navigate('/')}>
+            <ArrowLeft />
             <span>Back to Home</span>
           </button>
         </div>
