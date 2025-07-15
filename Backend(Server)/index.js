@@ -16,10 +16,11 @@ app.use("/api/users", userRoutes);
 
 // ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
-  // These options are optional since Mongoose 6+
+  dbName: "Meal_Saver_V3", // ✅ explicitly set the database name
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+
   .then(() => {
     console.log("✅ Connected to MongoDB");
     app.listen(5000, () => console.log("🚀 Server running on port 5000"));
